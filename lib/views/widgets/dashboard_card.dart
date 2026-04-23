@@ -3,11 +3,13 @@ import 'package:intl/intl.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class DashboardCard extends StatelessWidget {
+  final double currentBalance;
   final double totalIncome;
   final double totalExpense;
 
   const DashboardCard({
     super.key,
+    required this.currentBalance,
     required this.totalIncome,
     required this.totalExpense,
   });
@@ -22,9 +24,30 @@ class DashboardCard extends StatelessWidget {
         color: const Color(0xFFF8F9FA),
         borderRadius: BorderRadius.circular(24),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        //crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Text(
+            'Total Balance',
+            style: TextStyle(
+              color: Color(0xFF7A7A7A),
+              fontSize: 22,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            currencyFormat.format(currentBalance),
+            style: const TextStyle(
+              color: Color(0xFF1E212D),
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -74,6 +97,8 @@ class DashboardCard extends StatelessWidget {
               ),
             ),
           ),
+        ],
+      ),
         ],
       ),
     );
