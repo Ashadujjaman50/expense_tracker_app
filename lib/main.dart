@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'view_models/transaction_view_model.dart';
-import 'views/home_screen.dart';
+import 'views/main_screen.dart';
 
 void main() {
   runApp(
@@ -36,7 +36,7 @@ class ExpenseTrackerApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: const MainScreen(),
     );
   }
 }
