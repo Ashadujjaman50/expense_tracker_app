@@ -27,14 +27,37 @@ class TransactionItem extends StatelessWidget {
       iconBgColor = const Color(0xFFFFF3E0);
       iconColor = const Color(0xFFFFB74D);
       iconData = Icons.restaurant;
-    } else if (transaction.title.toLowerCase().contains('salary')) {
-      iconBgColor = const Color(0xFFE8F5E9);
-      iconColor = const Color(0xFF81C784);
-      iconData = Icons.attach_money;
+
+    } else if (transaction.title.toLowerCase().contains('transport')) {
+      iconBgColor = const Color(0xFFE1F5FE);
+      iconColor = const Color(0xFF4FC3F7);
+      iconData = Icons.directions_car;
+
+    } else if (transaction.title.toLowerCase().contains('shopping')) {
+      iconBgColor = const Color(0xFFFFEBEE);
+      iconColor = const Color(0xFFE57373);
+      iconData = Icons.shopping_bag;
+
     } else if (transaction.title.toLowerCase().contains('entertainment')) {
       iconBgColor = const Color(0xFFF3E5F5);
       iconColor = const Color(0xFFBA68C8);
-      iconData = Icons.local_activity;
+      iconData = Icons.movie;
+
+    } else if (transaction.title.toLowerCase().contains('health')) {
+      iconBgColor = const Color(0xFFE8F5E9);
+      iconColor = const Color(0xFF81C784);
+      iconData = Icons.local_hospital;
+
+    } else if (transaction.title.toLowerCase().contains('salary')) {
+      iconBgColor = const Color(0xFFE0F2F1);
+      iconColor = const Color(0xFF4DB6AC);
+      iconData = Icons.monetization_on;
+
+    } else if (transaction.title.toLowerCase().contains('other')) {
+      iconBgColor = const Color(0xFFECEFF1);
+      iconColor = const Color(0xFF90A4AE);
+      iconData = Icons.category;
+
     } else {
       iconBgColor = isIncome ? const Color(0xFFE8F5E9) : const Color(0xFFFFEBEE);
       iconColor = isIncome ? const Color(0xFF81C784) : const Color(0xFFE57373);
