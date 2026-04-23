@@ -12,19 +12,28 @@ class AddTransactionScreen extends StatefulWidget {
 
 class _AddTransactionScreenState extends State<AddTransactionScreen> {
   final _amountController = TextEditingController();
-  final _titleController = TextEditingController();
   TransactionType _selectedType = TransactionType.expense;
   DateTime _selectedDate = DateTime.now();
+
+  final List<Map<String, dynamic>> _categories = [
+    {'name': 'Food', 'icon': Icons.restaurant, 'color': const Color(0xFFFFB74D), 'bgColor': const Color(0xFFFFF3E0)},
+    {'name': 'Transport', 'icon': Icons.directions_car, 'color': const Color(0xFF4FC3F7), 'bgColor': const Color(0xFFE1F5FE)},
+    {'name': 'Shopping', 'icon': Icons.shopping_bag, 'color': const Color(0xFFE57373), 'bgColor': const Color(0xFFFFEBEE)},
+    {'name': 'Entertainment', 'icon': Icons.movie, 'color': const Color(0xFFBA68C8), 'bgColor': const Color(0xFFF3E5F5)},
+    {'name': 'Health', 'icon': Icons.local_hospital, 'color': const Color(0xFF81C784), 'bgColor': const Color(0xFFE8F5E9)},
+    {'name': 'Salary', 'icon': Icons.monetization_on, 'color': const Color(0xFF4DB6AC), 'bgColor': const Color(0xFFE0F2F1)},
+    {'name': 'Other', 'icon': Icons.category, 'color': const Color(0xFF90A4AE), 'bgColor': const Color(0xFFECEFF1)},
+  ];
+  String _selectedCategory = 'Food';
 
   @override
   void dispose() {
     _amountController.dispose();
-    _titleController.dispose();
     super.dispose();
   }
 
   void _saveTransaction() {
-    if (_amountController.text.isEmpty || _titleController.text.isEmpty) {
+    if (_amountController.text.isEmpty) {
       return;
     }
     
@@ -33,7 +42,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
 
     final newTransaction = TransactionModel(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
-      title: _titleController.text, // Using title as "Category"
+      title: _selectedCategory,
       amount: amount,
       date: _selectedDate,
       type: _selectedType,
@@ -126,29 +135,41 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                     color: const Color(0xFFF8F9FA),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFFFF3E0),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Icon(Icons.restaurant, color: Color(0xFFFFB74D), size: 20),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: TextField(
-                          controller: _titleController,
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'e.g. Food',
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: _selectedCategory,
+                      isExpanded: true,
+                      icon: const Icon(Icons.keyboard_arrow_down, color: Colors.grey),
+                      items: _categories.map((category) {
+                        return DropdownMenuItem<String>(
+                          value: category['name'],
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: category['bgColor'],
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Icon(category['icon'], color: category['color'], size: 20),
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                category['name'],
+                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
-                      const Icon(Icons.keyboard_arrow_down, color: Colors.grey),
-                    ],
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        if (newValue != null) {
+                          setState(() {
+                            _selectedCategory = newValue;
+                          });
+                        }
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -185,9 +206,13 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                 // Type Field (styled like "Payment Type" from design)
                 _buildLabel('Transaction Type'),
                 const SizedBox(height: 12),
-                _buildRadioItem('Income', TransactionType.income),
-                const SizedBox(height: 12),
-                _buildRadioItem('Expense', TransactionType.expense),
+                Row(
+                  children: [
+                    Expanded(child: _buildRadioItem('Income', TransactionType.income)),
+                    const SizedBox(width: 12),
+                    Expanded(child: _buildRadioItem('Expense', TransactionType.expense)),
+                  ],
+                ),
               ],
             ),
           ),
@@ -265,6 +290,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
           ),
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               width: 20,
